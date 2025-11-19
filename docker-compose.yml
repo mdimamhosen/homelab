@@ -1,0 +1,142 @@
+services:
+  socket-proxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:0.1.1
+    container_name: homelab-socket-proxy
+    environment:
+      CONTAINERS: 1
+      SERVICES: 1
+      TASKS: 1
+      POST: 0
+      AUTH: 0
+      VOLUMES: 0
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  portainer:
+    image: portainer/portainer-ce:2.21.4
+    container_name: portainer
+    command: -H tcp://socket-proxy:2375 --tlsskipverify
+    ports:
+      - "9443:9443"
+    environment:
+      - TZ=UTC
+    volumes:
+      - ./data/portainer:/data
+    depends_on:
+      - socket-proxy
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  nginx-proxy-manager:
+    image: jc21/nginx-proxy-manager:2.11.3
+    container_name: nginx-proxy-manager
+    ports:
+      - "8088:80"
+      - "81:81"
+      - "8443:443"
+    environment:
+      - TZ=UTC
+    volumes:
+      - ./data/nginx-proxy-manager:/data
+      - ./data/nginx-proxy-manager-letsencrypt:/etc/letsencrypt
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  homer:
+    image: b4bz/homer:latest
+    container_name: homer
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=UTC
+    volumes:
+      - ./data/homer:/www/assets
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  dashy:
+    image: lissy93/dashy:3.1.0
+    container_name: dashy
+    ports:
+      - "4000:8080"
+    environment:
+      - NODE_ENV=production
+      - TZ=UTC
+    volumes:
+      - ./data/dashy/conf.yml:/app/public/conf.yml
+    depends_on:
+      - uptime-kuma
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  nextcloud:
+    image: nextcloud:29.0.3
+    container_name: nextcloud
+    ports:
+      - "8081:80"
+    environment:
+      - NEXTCLOUD_TRUSTED_DOMAINS=localhost
+      - NEXTCLOUD_DATA_DIR=/var/www/html/data
+      - TZ=UTC
+    volumes:
+      - ./data/nextcloud:/var/www/html
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  filebrowser:
+    image: filebrowser/filebrowser:v2.32.0
+    container_name: filebrowser
+    ports:
+      - "8082:80"
+    environment:
+      - TZ=UTC
+    command:
+      - "--config"
+      - "/config/settings.json"
+      - "--database"
+      - "/database/filebrowser.db"
+    volumes:
+      - ./data/filebrowser/database:/database
+      - ./data/filebrowser/config:/config
+      - ./data/fileshare:/srv
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./data/uptime-kuma:/app/data
+    networks:
+      - homelab
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower:1.7.1
+    container_name: watchtower
+    command: --schedule "0 0 3 * * *" --cleanup
+    environment:
+      - TZ=UTC
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_NO_STARTUP_MESSAGE=true
+      - DOCKER_HOST=tcp://socket-proxy:2375
+    depends_on:
+      - socket-proxy
+    networks:
+      - homelab
+    restart: unless-stopped
+
+networks:
+  homelab:
+    driver: bridge

@@ -1,0 +1,43 @@
+title: My Homelab
+subtitle: Self-hosted services
+logo: https://raw.githubusercontent.com/bastienwirtz/homer/main/public/logo.png
+theme: default
+footer: ""
+columns: 3
+links:
+  - name: Documentation
+    icon: fas fa-book
+    url: https://docs.portainer.io/
+    target: _blank
+  - name: Support Forum
+    icon: fas fa-comments
+    url: https://community.nextcloud.com/
+    target: _blank
+services:
+  - name: Management
+    icon: fas fa-toolbox
+    items:
+      - name: Portainer
+        logo: https://avatars.githubusercontent.com/u/22225832
+        subtitle: "Container orchestrator"
+        tag: docker
+        url: https://localhost:9443
+      - name: Nginx Proxy Manager
+        logo: https://raw.githubusercontent.com/NginxProxyManager/nginx-proxy-manager/develop/docs/screenshots/logo.png
+        subtitle: Reverse proxy + SSL
+        url: http://localhost:81
+  - name: Apps
+    icon: fas fa-th-large
+    items:
+      - name: Nextcloud
+        logo: https://raw.githubusercontent.com/nextcloud/server/master/core/img/logo/logo.svg
+        subtitle: File sync & share
+        url: http://localhost:8081
+      - name: Homelab Drive
+        logo: https://raw.githubusercontent.com/filebrowser/logo/master/logo.png
+        subtitle: Upload & download files
+        url: http://localhost:8082
+      - name: Uptime Kuma
+        logo: https://raw.githubusercontent.com/louislam/uptime-kuma/master/public/logo.png
+        subtitle: Monitoring
+        url: http://localhost:3001

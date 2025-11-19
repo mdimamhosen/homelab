@@ -1,0 +1,11 @@
+# Ignore runtime data directories
+/data/portainer/
+/data/nginx-proxy-manager/
+/data/nginx-proxy-manager-letsencrypt/
+/data/nextcloud/
+/data/uptime-kuma/
+/data/fileshare/
+/data/filebrowser/database/
+/data/filebrowser/config/filebrowser.db
+config.bat
+node_modules

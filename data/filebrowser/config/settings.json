@@ -1,0 +1,35 @@
+{
+  "address": "",
+  "port": 80,
+  "log": "stdout",
+  "database": "/database/filebrowser.db",
+  "root": "/srv",
+  "baseURL": "",
+  "scope": "/srv",
+  "allowCommands": false,
+  "allowEdit": true,
+  "allowNew": true,
+  "allowPublish": false,
+  "commands": [],
+  "shell": "",
+  "authMethod": "native",
+  "branding": {
+    "name": "Homelab Drive",
+    "files": "",
+    "disableExternal": false
+  },
+  "perm": {
+    "admin": true,
+    "execute": false,
+    "create": true,
+    "rename": true,
+    "modify": true,
+    "delete": true,
+    "share": true,
+    "download": true
+  },
+  "viewMode": "mosaic",
+  "recaptcha": null,
+  "matcher": null,
+  "rules": []
+}

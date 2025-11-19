@@ -1,0 +1,141 @@
+appConfig:
+  theme: arctic
+  themeConfig:
+    accent: "#7dd3fc"
+    radius: 18
+    layout: auto
+  language: en
+  layout: auto
+  iconSize: large
+  title: MD Control Center
+  subtitle: Always-on homelab cockpit
+  footerText: "Stay curious. Stay self-hosted."
+  hideComponents:
+    hideNavHeader: false
+    hideFooter: false
+    hideSettings: true
+  startingView: workspace
+  customStyles: |
+    body {
+      background: #0a0c10;
+    }
+    .card, .workspace-section {
+      border-radius: 18px;
+      background: rgba(13,17,23,0.8) !important;
+      backdrop-filter: blur(18px);
+    }
+    .workspace-section__title {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  useMultiColorLogos: true
+  workspace:
+    layout: vertical
+    showTitle: false
+navLinks:
+  - title: Docs
+    path: https://github.com/mdimamhosen/homelab
+  - title: Uptime
+    path: http://localhost:3001
+  - title: Portainer
+    path: https://localhost:9443
+sections:
+  - name: Status & Telemetry
+    icon: fas fa-satellite
+    displayData:
+      cols: 2
+    widgets:
+      - type: clock
+        options:
+          timeZone: Asia/Dhaka
+          format: 12
+      - type: weather
+        options:
+          apiKey: ""
+          city: Dhaka, BD
+          units: metric
+      - type: system-info
+        options:
+          showFreeMemory: true
+          showDisk: true
+          host: host.docker.internal
+      - type: rss-feed
+        options:
+          url: https://www.reddit.com/r/selfhosted/.rss
+          cardTitle: Self-hosted Buzz
+          maxItems: 4
+      - type: iframe
+        options:
+          url: https://dashy.toys/charts/cpu
+          title: Activity Snapshot
+  - name: Core Services
+    icon: fas fa-layer-group
+    items:
+      - title: Control HQ
+        description: Dashy itself
+        url: http://localhost:4000
+        icon: https://raw.githubusercontent.com/Lissy93/dashy/master/public/img/logo.png
+        statusCheck: http://dashy:8080
+      - title: Portainer
+        description: Container ops
+        url: https://localhost:9443
+        icon: fab fa-docker
+        statusCheck: https://portainer:9443
+      - title: NPM
+        description: Reverse proxy + SSL
+        url: http://localhost:81
+        icon: fas fa-shield-alt
+        statusCheck: http://nginx-proxy-manager:81
+      - title: Uptime Kuma
+        description: Stack heartbeat
+        url: http://localhost:3001
+        icon: https://raw.githubusercontent.com/louislam/uptime-kuma/master/public/logo.png
+        statusCheck: http://uptime-kuma:3001
+  - name: Storage & Productivity
+    icon: fas fa-cloud
+    items:
+      - title: Nextcloud
+        description: Files, calendar, contacts
+        url: http://localhost:8081
+        icon: https://raw.githubusercontent.com/nextcloud/server/master/core/img/logo/logo.svg
+        statusCheck: http://nextcloud:80
+      - title: Homelab Drive
+        description: Fast upload + download portal
+        url: http://localhost:8082
+        icon: https://raw.githubusercontent.com/filebrowser/logo/master/logo.png
+        statusCheck: http://filebrowser:80
+  - name: Networking & Extras
+    icon: fas fa-tools
+    items:
+      - title: Homer (Classic)
+        description: Minimal quick launcher
+        url: http://localhost:8080
+        icon: fas fa-th
+      - title: Documentation
+        description: Project README
+        url: https://github.com/mdimamhosen/homelab
+        icon: fas fa-book
+      - title: Server Shell
+        description: SSH into host
+        url: ssh://<your-server-ip>
+        icon: fas fa-terminal
+  - name: Notes & Tasks
+    icon: fas fa-sticky-note
+    widgets:
+      - type: todo-list
+        options:
+          title: Homelab TODO
+          todos:
+            - text: Configure public domain in NPM
+              completed: false
+            - text: Add more monitors in Kuma
+              completed: false
+            - text: Schedule weekly data backups
+              completed: false
+      - type: releases
+        options:
+          repositories:
+            - containrrr/watchtower
+            - nextcloud/server
+          limit: 4
